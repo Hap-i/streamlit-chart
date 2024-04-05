@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # Define the model to use
 MODEL_NAME = "gpt-3.5-turbo"
 load_dotenv()
-client = OpenAI(api_key=os.environ.get('os.environ.get'))
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
 def handle_openai_query(df, column_names):

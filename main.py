@@ -24,7 +24,7 @@ def display_app_header():
 # Display the header of the app
 display_app_header()
 
-API = os.environ.get('OPENAI_API_KEY')
+API = st.secrets["OPENAI_API_KEY"]
 
 if API:
     os.environ["OPENAI_API_KEY"] = API
