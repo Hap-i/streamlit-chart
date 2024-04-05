@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
 import re
-import openai
-
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
 # Define the model to use
 MODEL_NAME = "gpt-3.5-turbo"
+load_dotenv()
+client = OpenAI(api_key=os.environ.get('os.environ.get'))
 
 
 def handle_openai_query(df, column_names):
@@ -78,10 +81,11 @@ def handle_openai_query(df, column_names):
                 with st.chat_message("assistant", avatar="📊"):
                     botmsg = st.empty()
                     response = []
-                    for chunk in openai.ChatCompletion.create(
+                    for chunk in client.chat.completions.create(
                         model=MODEL_NAME, messages=messages, stream=True
                     ):
-                        text = chunk.choices[0].get("delta", {}).get("content")
+                        print(chunk)
+                        text = chunk.choices[0].delta.content
                         if text:
                             response.append(text)
                             result = "".join(response).strip()
@@ -139,7 +143,6 @@ def execute_openai_code(response_text: str, df: pd.DataFrame, query):
                 - Tweak your prompts to overcome the error 
                 - Use the words 'Plot'/ 'Subplot'
                 - Use simpler, concise words
-                - Remember, I'm specialized in displaying charts not in conveying information about the dataset
             """
             )
     else:
